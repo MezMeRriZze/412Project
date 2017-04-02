@@ -28,7 +28,7 @@ def cross_validate(classifier, X, Y, tree_name):
 
 	if tree_name is not None:
 		opt_idx = np.argmax(accuracy)
-		print accuracy[opt_idx]
+                print "max : " + str(accuracy[opt_idx])
 #		tree.export_graphviz(dts[opt_idx], out_file=tree_name)     
 	mean, std = np.mean(accuracy), np.std(accuracy)
         print "mean : " + str(mean)
@@ -42,14 +42,27 @@ def trainTree(user, movie, train, maxDep = 16):
     return dt
 
 def predict(user, movie, test, dt):
-    return 
+    ret = []
+    X = get_test(user, movie, test)
+    for item in X:
+        out = dt.predict(np.array(item[1]))
+        ret.append([item[0], out[0]])
+    return ret
 
 def main():
     user = readUser()
     movie = readMovie()
+    print "length of user and movie"
+    print len(user), len(movie)
     train = readTrain()
     test = readTest()
     dt = trainTree(user, movie, train, maxDep = None)
+    res = predict(user, movie, test, dt)
+    with open("../out/output.txt", "w") as f :
+        f.write("Id,rating\n")
+        for item in res :
+            f.write(str(item[0]) + ", " + str(item[1]) + "\n")
+
 
 
 main()
