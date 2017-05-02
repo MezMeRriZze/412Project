@@ -1,6 +1,7 @@
 import copy
 import preprocess
 import linear_regression
+# from sklearn.linear_model import LinearRegression
 import numpy as np
 
 def GetFeature(user, movie):
@@ -27,15 +28,15 @@ def main():
     uid, mid, rating = line
     user_feature = copy.deepcopy(user[uid])
     if uid in user_avg_rating:
-      user_feature.append(user_avg_rating[uid])
+      user_feature.append(user_avg_rating[uid] / 5.0)
     else:
-      user_feature.append(all_avg)
+      user_feature.append(all_avg  / 5.0)
 
     movie_feature = copy.deepcopy(movie[mid])
     if mid in moive_avg_rating:
-      movie_feature.append(moive_avg_rating[mid])
+      movie_feature.append(moive_avg_rating[mid] / 5.0)
     else:
-      movie_feature.append(all_avg)
+      movie_feature.append(all_avg / 5.0)
 
     features = GetFeature(user_feature, movie_feature)
     X.append(features)
@@ -44,6 +45,8 @@ def main():
   print 'Begin training model:'
   model = linear_regression.LinearRegression()
   model.fit(X, y)
+  print model.theta_
+  print model.intercept_
   print 'End training model.'
 
   test_X = []

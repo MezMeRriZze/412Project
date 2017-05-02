@@ -11,10 +11,8 @@ class LinearRegression(object):
   def fit(self, X, y):
     X = np.array(X)
     y = np.array(y)
-    # Add a constant offset.
-    X.resize( (X.shape[0], X.shape[1] + 1) )
-    for i in range(len(X)):
-      X[i][-1] = 1.0
+    
+    X, y, X_offset, y_offset = self.preprocess_data(X, y)
 
     assert len(X.shape) == 2
     num_samples, num_dimensions = X.shape
@@ -35,17 +33,26 @@ class LinearRegression(object):
         break
       prev_cost = curr_cost
 
+    self.set_intercept(X_offset, y_offset)
+
   def predict(self, X):
     X = np.array(X)
-    X.resize( (X.shape[0], X.shape[1] + 1) )
-    for i in range(len(X)):
-      X[i][-1] = 1.0
 
     # print self.theta_
-    return X.dot(self.theta_)
+    return X.dot(self.theta_) + self.intercept_
 
   def compute_cost(self, X, y, theta):
     return 1.0 / (2 * y.shape[0]) * (X.dot(theta) - y).dot((X.dot(theta) - y))
+
+  def preprocess_data(self, X, y):
+    X_offset = np.average(X, axis=0)
+    y_offset = np.average(y, axis=0)
+    X = X - X_offset
+    y = y - y_offset
+    return X, y, X_offset, y_offset
+
+  def set_intercept(self, X_offset, y_offset):
+    self.intercept_ = y_offset - self.theta_.dot(X_offset)
 
 if __name__ == '__main__':
   X = np.array([[1.0, 3.0, 4.0],\
