@@ -1,6 +1,7 @@
 import copy
 import preprocess
 import linear_regression
+import numpy as np
 
 def GetFeature(user, movie):
   ret = []

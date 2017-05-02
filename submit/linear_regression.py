@@ -31,7 +31,7 @@ class LinearRegression(object):
                                    .dot(X.dot(self.theta_) - y)
       curr_cost = self.compute_cost(X, y, self.theta_)
       print 'iter', i, ': cost =', curr_cost
-      if math.fabs(curr_cost - prev_cost) < 1e-6:
+      if math.fabs(curr_cost - prev_cost) < 1e-7:
         break
       prev_cost = curr_cost
 
