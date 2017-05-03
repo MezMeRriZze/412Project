@@ -28,15 +28,15 @@ def main():
     uid, mid, rating = line
     user_feature = copy.deepcopy(user[uid])
     if uid in user_avg_rating:
-      user_feature.append(user_avg_rating[uid] / 5.0)
+      user_feature.append(user_avg_rating[uid])
     else:
-      user_feature.append(all_avg  / 5.0)
+      user_feature.append(all_avg)
 
     movie_feature = copy.deepcopy(movie[mid])
     if mid in moive_avg_rating:
-      movie_feature.append(moive_avg_rating[mid] / 5.0)
+      movie_feature.append(moive_avg_rating[mid])
     else:
-      movie_feature.append(all_avg / 5.0)
+      movie_feature.append(all_avg)
 
     features = GetFeature(user_feature, movie_feature)
     X.append(features)
@@ -44,6 +44,7 @@ def main():
 
   print 'Begin training model:'
   model = linear_regression.LinearRegression()
+  # model = LinearRegression()
   model.fit(X, y)
   print model.theta_
   print model.intercept_

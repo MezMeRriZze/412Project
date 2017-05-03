@@ -3,7 +3,7 @@ import sys
 import math
 
 class LinearRegression(object):
-  def __init__(self, alpha = 0.05, max_iter = 10000):
+  def __init__(self, alpha = 0.08, max_iter = 10000):
     self.theta_ = None
     self.alpha_ = alpha
     self.max_iter_ = max_iter
@@ -29,7 +29,7 @@ class LinearRegression(object):
                                    .dot(X.dot(self.theta_) - y)
       curr_cost = self.compute_cost(X, y, self.theta_)
       print 'iter', i, ': cost =', curr_cost
-      if math.fabs(curr_cost - prev_cost) < 1e-7:
+      if math.fabs(curr_cost - prev_cost) < 1e-10:
         break
       prev_cost = curr_cost
 
